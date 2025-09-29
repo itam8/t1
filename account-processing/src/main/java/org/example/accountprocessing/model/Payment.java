@@ -12,9 +12,8 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
+    @Column(name = "account_id")
+    private Long accountId;
     @Column(name = "payment_date")
     private LocalDate paymentDate;
     private Double amount;

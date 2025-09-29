@@ -12,12 +12,10 @@ public class ClientProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "client_id")
+    private Long clientId;
+    @Column(name = "product_id")
+    private Long productId;
     @Column(name = "open_date")
     private LocalDate openDate;
     @Column(name = "close_date")

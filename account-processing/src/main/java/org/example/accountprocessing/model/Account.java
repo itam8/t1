@@ -1,23 +1,23 @@
 package org.example.accountprocessing.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.example.clientprocessing.model.Client;
-import org.example.clientprocessing.model.Product;
+import lombok.NoArgsConstructor;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "accounts")
 public class Account {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "client_id")
-    private Client client;
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
+    @Column(name = "client_id")
+    private Long clientId;
+    @Column(name = "product_id")
+    private Long productId;
     private Double balance;
     @Column(name = "interest_rate")
     private Double interestRate;

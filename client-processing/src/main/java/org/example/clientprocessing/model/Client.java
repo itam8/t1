@@ -1,11 +1,15 @@
 package org.example.clientprocessing.model;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity
 @Table(name = "clients")
 public class Client {
@@ -14,9 +18,8 @@ public class Client {
     private Long id;
     @Column(name = "client_id")
     private String clientId;
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    @Column(name = "user_id")
+    private Long userId;
     @Column(name = "first_name")
     private String firstName;
     @Column(name = "middle_name")

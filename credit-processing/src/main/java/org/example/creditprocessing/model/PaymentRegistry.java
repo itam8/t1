@@ -12,9 +12,8 @@ public class PaymentRegistry {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "product_registry_id")
-    private ProductRegistry productRegistry;
+    @Column(name = "product_registry_id")
+    private Long productRegistryId;
     @Column(name = "paymend_date")
     private LocalDate paymendDate;
     private Double amount;

@@ -12,12 +12,10 @@ public class Transaction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "account_id")
-    private Account account;
-    @ManyToOne
-    @JoinColumn(name = "card_id")
-    private Card card;
+    @Column(name = "account_id")
+    private Long accountId;
+    @Column(name = "card_id")
+    private Long cardId;
     @Enumerated(EnumType.STRING)
     private Type type;
     private Double amount;

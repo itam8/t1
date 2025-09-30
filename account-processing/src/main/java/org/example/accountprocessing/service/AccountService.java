@@ -8,6 +8,8 @@ import org.example.accountprocessing.model.Status;
 import org.example.accountprocessing.repository.AccountRepository;
 import org.springframework.stereotype.Service;
 
+import java.util.Optional;
+
 @Service
 @AllArgsConstructor
 public class AccountService {
@@ -24,6 +26,15 @@ public class AccountService {
                 false,
                 Status.OPENED
         ));
+    }
+
+    public Account findById(Long id) {
+        Optional<Account> optionalAccount = accountRepository.findById(id);
+        if (optionalAccount.isEmpty()) {
+            throw new IllegalStateException("Счёт с таким id не существует");
+        }
+
+        return optionalAccount.get();
     }
 
     public Account findByClientIdAndProductId(ClientCardDto clientCardDto) {

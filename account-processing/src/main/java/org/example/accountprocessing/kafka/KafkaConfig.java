@@ -4,6 +4,8 @@ import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.example.accountprocessing.dto.ClientCardDto;
 import org.example.accountprocessing.dto.ClientProductDto;
+import org.example.accountprocessing.model.Payment;
+import org.example.accountprocessing.model.Transaction;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -56,6 +58,34 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, ClientCardDto> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(clientCardsConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, Transaction> clientTransactionsConsumerFactory() {
+        final String VALUE_DEFAULT_TYPE = "org.example.accountprocessing.model.Transaction";
+        return new DefaultKafkaConsumerFactory<>(consumerConfigs(VALUE_DEFAULT_TYPE));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Transaction> clientTransactionsKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Transaction> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(clientTransactionsConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, Payment> clientPaymentsConsumerFactory() {
+        final String VALUE_DEFAULT_TYPE = "org.example.accountprocessing.model.Payment";
+        return new DefaultKafkaConsumerFactory<>(consumerConfigs(VALUE_DEFAULT_TYPE));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, Payment> clientPaymentsKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, Payment> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(clientPaymentsConsumerFactory());
         return factory;
     }
 }

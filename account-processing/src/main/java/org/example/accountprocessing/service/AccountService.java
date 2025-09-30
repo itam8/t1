@@ -1,6 +1,7 @@
 package org.example.accountprocessing.service;
 
 import lombok.AllArgsConstructor;
+import org.example.accountprocessing.dto.ClientCardDto;
 import org.example.accountprocessing.dto.ClientProductDto;
 import org.example.accountprocessing.model.Account;
 import org.example.accountprocessing.model.Status;
@@ -25,8 +26,8 @@ public class AccountService {
         ));
     }
 
-    public Account findByClientIdAndProductId(ClientProductDto clientProductDto) {
-        return accountRepository.findByClientIdAndProductId(clientProductDto.getClientId(), clientProductDto.getProductId());
+    public Account findByClientIdAndProductId(ClientCardDto clientCardDto) {
+        return accountRepository.findByClientIdAndProductId(clientCardDto.getClientId(), clientCardDto.getProductId());
     }
 
     public boolean isAccountClosed(Long id) {

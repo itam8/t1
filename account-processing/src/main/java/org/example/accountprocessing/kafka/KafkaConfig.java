@@ -2,6 +2,7 @@ package org.example.accountprocessing.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.StringDeserializer;
+import org.example.accountprocessing.dto.ClientCardDto;
 import org.example.accountprocessing.dto.ClientProductDto;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,25 +18,44 @@ import java.util.Map;
 @Configuration
 public class KafkaConfig {
     @Bean
-    public ConsumerFactory<String, ClientProductDto> consumerFactory() {
+    public ConsumerFactory<String, ClientProductDto> clientProductsConsumerFactory() {
+        final String VALUE_DEFAULT_TYPE = "org.example.accountprocessing.dto.ClientProductDto";
+        return new DefaultKafkaConsumerFactory<>(consumerConfigs(VALUE_DEFAULT_TYPE));
+    }
+
+    private Map<String, Object> consumerConfigs(String valueDefaultType) {
         Map<String, Object> config = new HashMap<>();
         config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
         config.put(ConsumerConfig.GROUP_ID_CONFIG, "account-processing");
         config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
         config.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG, JsonDeserializer.class);
-        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, "org.example.accountprocessing.dto.ClientProductDto");
+        config.put(JsonDeserializer.VALUE_DEFAULT_TYPE, valueDefaultType);
         config.put(JsonDeserializer.TRUSTED_PACKAGES, "*");
         config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, false);
         config.put(ErrorHandlingDeserializer.VALUE_DESERIALIZER_CLASS, JsonDeserializer.class.getName());
         config.put(ErrorHandlingDeserializer.KEY_DESERIALIZER_CLASS, StringDeserializer.class);
-        return new DefaultKafkaConsumerFactory<>(config);
+        return config;
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, ClientProductDto> kafkaListenerContainerFactory() {
+    public ConcurrentKafkaListenerContainerFactory<String, ClientProductDto> clientProductsKafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, ClientProductDto> factory =
                 new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(clientProductsConsumerFactory());
+        return factory;
+    }
+
+    @Bean
+    public ConsumerFactory<String, ClientCardDto> clientCardsConsumerFactory() {
+        final String VALUE_DEFAULT_TYPE = "org.example.accountprocessing.dto.ClientCardDto";
+        return new DefaultKafkaConsumerFactory<>(consumerConfigs(VALUE_DEFAULT_TYPE));
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, ClientCardDto> clientCardsKafkaListenerContainerFactory() {
+        ConcurrentKafkaListenerContainerFactory<String, ClientCardDto> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(clientCardsConsumerFactory());
         return factory;
     }
 }

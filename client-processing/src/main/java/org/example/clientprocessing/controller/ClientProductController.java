@@ -1,6 +1,7 @@
 package org.example.clientprocessing.controller;
 
 import lombok.AllArgsConstructor;
+import org.example.clientprocessing.dto.ClientCardDto;
 import org.example.clientprocessing.dto.ClientProductDto;
 import org.example.clientprocessing.dto.ProductRegistryDto;
 import org.example.clientprocessing.kafka.KafkaProducer;
@@ -17,13 +18,13 @@ public class ClientProductController {
         kafkaProducer.sendClientProductMessage(clientProductDto);
     }
 
-    @PostMapping
+    @PostMapping("/credit")
     public void sendClientCreditProductMessage(@RequestBody ProductRegistryDto productRegistryDto) {
         kafkaProducer.sendClientCreditProductMessage(productRegistryDto);
     }
 
     @PostMapping("/cards")
-    public void sendClientCardMessage(@RequestBody ClientProductDto clientProductDto) {
-        kafkaProducer.sendClientCardMessage(clientProductDto);
+    public void sendClientCardMessage(@RequestBody ClientCardDto clientCardDto) {
+        kafkaProducer.sendClientCardMessage(clientCardDto);
     }
 }

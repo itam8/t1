@@ -43,9 +43,10 @@ public class KafkaConsumer {
     )
     public void listenClientTransactions(Transaction message) {
         Account account = accountService.findById(message.getAccountId());
-        LocalDateTime now = LocalDateTime.now();
-        List<Transaction> transactions = transactionService
-                .findAllByCardIdAndTimestampBetween(message.getCardId(), now.minus(accountProcessingConfig.getMaxPeriod()), now);
+        LocalDateTime timestamp = message.getTimestamp();
+        List<Transaction> transactions = transactionService.findAllByCardIdAndTimestampBetween(
+                message.getCardId(), timestamp.minus(accountProcessingConfig.getMaxPeriod()), timestamp
+        );
 
         if (account.getStatus() != Status.OPENED && account.getStatus() != Status.ACTIVE) {
             return;

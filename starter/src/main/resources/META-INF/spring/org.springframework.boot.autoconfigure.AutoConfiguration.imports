@@ -1,0 +1,2 @@
+org.example.starter.config.LoggingAutoConfiguration
+org.example.starter.kafka.KafkaStarterConfig

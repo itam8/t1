@@ -26,8 +26,9 @@ public class HttpIncomeRequestLogAspect {
                 joinPoint.getSignature().toString(),
                 Arrays.toString(joinPoint.getArgs())
         );
+        String[] names = joinPoint.getTarget().getClass().getName().split("\\.");
         kafkaStarterProducer.sendServiceLogMessage(new HttpRequestLogDto(
-                joinPoint.getTarget().getClass().getSimpleName(),
+                names[2],
                 "type",
                 LogType.INFO.name(),
                 httpRequestLogMessage

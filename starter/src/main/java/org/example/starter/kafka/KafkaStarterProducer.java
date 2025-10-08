@@ -7,6 +7,7 @@ import org.apache.kafka.common.KafkaException;
 import org.apache.kafka.common.header.internals.RecordHeader;
 import org.example.starter.dto.ErrorLogDto;
 import org.example.starter.dto.HttpRequestLogDto;
+import org.example.starter.dto.MetricDto;
 import org.example.starter.service.ErrorLogService;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -15,13 +16,14 @@ import org.springframework.stereotype.Service;
 @Service
 @AllArgsConstructor
 public class KafkaStarterProducer {
+    private static final String SERVICE_LOGS_TOPIC = "service_logs";
     private final KafkaTemplate<String, Object> kafkaTemplate;
     private final ErrorLogService errorLogService;
 
     public void sendServiceLogMessage(ErrorLogDto message) {
         try {
             ProducerRecord<String, Object> record =
-                    new ProducerRecord<>("service_logs", message.getServiceName(), message.getMessage());
+                    new ProducerRecord<>(SERVICE_LOGS_TOPIC, message.getServiceName(), message.getMessage());
             record.headers().add(new RecordHeader(message.getHeaderKey(), message.getHeaderValue().getBytes()));
 
             kafkaTemplate.send(record);
@@ -33,7 +35,15 @@ public class KafkaStarterProducer {
 
     public void sendServiceLogMessage(HttpRequestLogDto message) {
         ProducerRecord<String, Object> record =
-                new ProducerRecord<>("service_logs", message.getServiceName(), message.getMessage());
+                new ProducerRecord<>(SERVICE_LOGS_TOPIC, message.getServiceName(), message.getMessage());
+        record.headers().add(new RecordHeader(message.getHeaderKey(), message.getHeaderValue().getBytes()));
+
+        kafkaTemplate.send(record);
+    }
+
+    public void sendServiceLogMessage(MetricDto message) {
+        ProducerRecord<String, Object> record =
+                new ProducerRecord<>(SERVICE_LOGS_TOPIC, message.getServiceName(), message.getMessage());
         record.headers().add(new RecordHeader(message.getHeaderKey(), message.getHeaderValue().getBytes()));
 
         kafkaTemplate.send(record);

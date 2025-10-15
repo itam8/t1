@@ -3,6 +3,7 @@ package org.example.clientprocessing.controller;
 import lombok.AllArgsConstructor;
 import org.example.clientprocessing.model.Product;
 import org.example.clientprocessing.service.ProductService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -11,16 +12,19 @@ import org.springframework.web.bind.annotation.*;
 public class ProductController {
     private final ProductService productService;
 
+    @PreAuthorize("hasRole('MASTER')")
     @PostMapping
     public Product create(@RequestBody Product product) {
         return productService.create(product);
     }
 
+    @PreAuthorize("hasAnyRole('MASTER', 'GRAND_EMPLOYEE')")
     @PutMapping
     public void update(@RequestBody Product product) {
         productService.update(product);
     }
 
+    @PreAuthorize("hasAnyRole('MASTER', 'GRAND_EMPLOYEE')")
     @DeleteMapping
     public void delete(@RequestParam Long id) {
         productService.delete(id);

@@ -8,7 +8,6 @@ import org.example.clientprocessing.model.User;
 import org.example.clientprocessing.repository.ClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.Optional;
 
@@ -22,7 +21,6 @@ public class ClientService {
     @Transactional
     public RegisterDto create(RegisterDto registerDto) {
         User user = userService.create(new User(
-                null,
                 registerDto.getLogin(),
                 registerDto.getPassword(),
                 registerDto.getEmail()

@@ -14,7 +14,8 @@ public class Product {
     private Long id;
     private String name;
     @Enumerated(EnumType.STRING)
-    private Key key;
+    @Column(name = "product_key")
+    private Key productKey;
     @Column(name = "create_date")
     private LocalDate createDate;
     @Transient
@@ -22,7 +23,7 @@ public class Product {
 
     public String getProductId() {
         if (this.productId == null) {
-            String var10001 = this.key.name();
+            String var10001 = this.productKey.name();
             this.productId = var10001 + this.id;
         }
 
